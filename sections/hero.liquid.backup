@@ -242,8 +242,8 @@
     {%- endif -%}
     <div
       class="hero__media-wrapper parallax-bg"
-      {%- if has_background and section.settings.background_type == 'image' -%}
-        style="--hero-media-aspect-ratio: {{ section.settings.background_image.aspect_ratio }};"
+      {%- if section.settings.image_1 != blank -%}
+        style="--hero-media-aspect-ratio: {{ section.settings.image_1.aspect_ratio }}; --hero-media-count: {{ media_count }};"
       {%- endif -%}
     >
       {% liquid
@@ -251,25 +251,7 @@
           render 'overlay', settings: section.settings
         endif
       %}
-      
-      <!-- Background Layer (z-index: 1) -->
-      {% if has_background %}
-        <div class="hero__background-layer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
-          {{ background_media }}
-        </div>
-      {% endif %}
-      
-      <!-- Carousel Layers (z-index: 10+) -->
-      {% if has_carousels %}
-        {% for block in carousel_blocks %}
-          {% render 'hero-carousel-layer', block: block, layer_index: forloop.index %}
-        {% endfor %}
-      {% endif %}
-      
-      <!-- Fallback to legacy media if no new layers -->
-      {% unless has_background or has_carousels %}
-        {{ media }}
-      {% endunless %}
+      {{ media }}
     </div>
     <div
       class="
@@ -484,76 +466,7 @@
 
   .hero__content-wrapper {
     position: relative;
-    z-index: 20; /* Above all carousel layers */
-  }
-
-  /* Hero Carousel System Styles */
-  .hero-carousel-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    pointer-events: none;
-  }
-
-  .hero-carousel-frames {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-
-  .hero-carousel-frame {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transition: opacity 0.8s ease-in-out, transform 1s ease-in-out, filter 0.9s ease-in-out;
-  }
-
-  .hero-carousel-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  /* Zoom effect on hover */
-  .hero-carousel-layer[data-zoom-intensity]:not([data-zoom-intensity="0"]):hover .hero-carousel-image {
-    transform: scale(var(--carousel-zoom-scale));
-  }
-
-  /* Background layer styles */
-  .hero__background-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .hero__background-image,
-  .hero__background-layer .hero__image,
-  .hero__background-layer .hero__video,
-  .hero__background-layer .hero__video-poster {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center center;
-  }
-
-  /* Reduced motion preferences */
-  @media (prefers-reduced-motion: reduce) {
-    .hero-carousel-frame {
-      transition: opacity 0.3s ease;
-    }
-    
-    .hero-carousel-image {
-      transition: none;
-    }
+    z-index: 2;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -576,8 +489,6 @@
     }
   }
 {% endstylesheet %}
-
-{{ 'hero-carousel.js' | asset_url | script_tag }}
 
 {% schema %}
 {
@@ -608,9 +519,6 @@
     },
     {
       "type": "_marquee"
-    },
-    {
-      "type": "_hero-carousel"
     }
   ],
   "disabled_on": {
@@ -619,56 +527,7 @@
   "settings": [
     {
       "type": "header",
-      "content": "Background Layer"
-    },
-    {
-      "type": "select",
-      "id": "background_type",
-      "label": "Background Type",
-      "options": [
-        {
-          "value": "none",
-          "label": "None"
-        },
-        {
-          "value": "image",
-          "label": "Image"
-        },
-        {
-          "value": "video",
-          "label": "Video"
-        }
-      ],
-      "default": "image",
-      "info": "Choose the background layer type. Carousel layers will be displayed on top."
-    },
-    {
-      "type": "image_picker",
-      "id": "background_image",
-      "label": "Background Image",
-      "visible_if": "{{ section.settings.background_type == 'image' }}"
-    },
-    {
-      "type": "video",
-      "id": "background_video",
-      "label": "Background Video",
-      "visible_if": "{{ section.settings.background_type == 'video' }}"
-    },
-    {
-      "type": "header",
-      "content": "Carousel Layers"
-    },
-    {
-      "type": "paragraph",
-      "content": "Add carousel blocks below to create layered carousel effects. Each carousel will stack on top of the background, with the first carousel closest to the background."
-    },
-    {
-      "type": "header",
-      "content": "Legacy Media (Deprecated)"
-    },
-    {
-      "type": "paragraph",
-      "content": "These settings are deprecated. Please use the Background Layer and Carousel Layers above for the new layered system."
+      "content": "t:content.media"
     },
     {
       "type": "select",

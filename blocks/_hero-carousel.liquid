@@ -1,0 +1,153 @@
+{%- doc -%}
+  Renders a hero carousel layer with images and configurable effects.
+  
+  @param {string} carousel_id - Unique identifier for this carousel
+  @param {number} frame_duration - Duration for each frame in seconds
+  @param {string} transition_type - Type of transition between frames
+  @param {number} effect_zoom_intensity - Mouse over zoom effect intensity (1-10)
+  @param {number} effect_parallax_vertical_intensity - Vertical parallax effect intensity (1-10)
+  @param {number} effect_parallax_horizontal_intensity - Horizontal parallax effect intensity (1-10)
+{%- enddoc -%}
+
+{% liquid
+  assign carousel_id = block.id | default: 'carousel-' | append: forloop.index0
+  assign frame_duration = block.settings.frame_duration | default: 3
+  assign transition_type = block.settings.transition_type | default: 'fade'
+  assign zoom_intensity = block.settings.effect_zoom_intensity | default: 0
+  assign parallax_v_intensity = block.settings.effect_parallax_vertical_intensity | default: 0
+  assign parallax_h_intensity = block.settings.effect_parallax_horizontal_intensity | default: 0
+  
+  # Calculate effect values based on intensity
+  assign zoom_scale = zoom_intensity | times: 0.01 | plus: 1.0
+  assign parallax_v_strength = parallax_v_intensity | times: 5
+  assign parallax_h_strength = parallax_h_intensity | times: 5
+%}
+
+<div 
+  class="hero-carousel-layer"
+  data-carousel-id="{{ carousel_id }}"
+  data-frame-duration="{{ frame_duration }}"
+  data-transition-type="{{ transition_type }}"
+  data-zoom-intensity="{{ zoom_intensity }}"
+  data-parallax-v-intensity="{{ parallax_v_intensity }}"
+  data-parallax-h-intensity="{{ parallax_h_intensity }}"
+  style="
+    --carousel-zoom-scale: {{ zoom_scale }};
+    --carousel-parallax-v: {{ parallax_v_strength }}px;
+    --carousel-parallax-h: {{ parallax_h_strength }}px;
+    --carousel-frame-duration: {{ frame_duration }}s;
+  "
+>
+  {% if block.settings.images != blank %}
+    <div class="hero-carousel-frames">
+      {% for image in block.settings.images %}
+        <div 
+          class="hero-carousel-frame {% if forloop.first %}active{% endif %}"
+          data-frame-index="{{ forloop.index0 }}"
+        >
+          {{ image | image_url: width: 3840 | image_tag: 
+            class: 'hero-carousel-image',
+            loading: 'lazy',
+            sizes: '100vw',
+            widths: '832, 1200, 1600, 1920, 2560, 3840'
+          }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Hero Carousel Layer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "images",
+      "label": "Carousel Images",
+      "info": "Add multiple images for the carousel. Each image will be a frame in the carousel.",
+      "list": true
+    },
+    {
+      "type": "header",
+      "content": "Animation Settings"
+    },
+    {
+      "type": "range",
+      "id": "frame_duration",
+      "label": "Frame Duration",
+      "min": 0.5,
+      "max": 10,
+      "step": 0.1,
+      "unit": "s",
+      "default": 3,
+      "info": "How long each frame is displayed"
+    },
+    {
+      "type": "select",
+      "id": "transition_type",
+      "label": "Transition Type",
+      "options": [
+        {
+          "value": "fade",
+          "label": "Fade"
+        },
+        {
+          "value": "slide",
+          "label": "Slide"
+        },
+        {
+          "value": "zoom",
+          "label": "Zoom"
+        },
+        {
+          "value": "blur",
+          "label": "Blur"
+        }
+      ],
+      "default": "fade"
+    },
+    {
+      "type": "header",
+      "content": "Effects"
+    },
+    {
+      "type": "range",
+      "id": "effect_zoom_intensity",
+      "label": "Mouse Over Zoom",
+      "min": 0,
+      "max": 10,
+      "step": 0.01,
+      "unit": "",
+      "default": 0,
+      "info": "Zoom effect on mouse hover (0 = disabled, 10 = maximum)"
+    },
+    {
+      "type": "range",
+      "id": "effect_parallax_vertical_intensity",
+      "label": "Vertical Parallax",
+      "min": 0,
+      "max": 10,
+      "step": 0.01,
+      "unit": "",
+      "default": 0,
+      "info": "Vertical parallax scroll effect (0 = disabled, 10 = maximum)"
+    },
+    {
+      "type": "range",
+      "id": "effect_parallax_horizontal_intensity",
+      "label": "Horizontal Parallax",
+      "min": 0,
+      "max": 10,
+      "step": 0.01,
+      "unit": "",
+      "default": 0,
+      "info": "Horizontal parallax scroll effect (0 = disabled, 10 = maximum)"
+    }
+  ]
+}
+{% endschema %}
