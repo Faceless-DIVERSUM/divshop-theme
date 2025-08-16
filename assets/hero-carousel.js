@@ -26,6 +26,9 @@ class HeroCarouselLayer extends Component {
       zoomIntensity: parseFloat(element.dataset.zoomIntensity) || 0,
       parallaxVIntensity: parseFloat(element.dataset.parallaxVIntensity) || 0,
       parallaxHIntensity: parseFloat(element.dataset.parallaxHIntensity) || 0,
+      kenBurnsIntensity: parseFloat(element.dataset.kenBurnsIntensity) || 0,
+      tiltIntensity: parseFloat(element.dataset.tiltIntensity) || 0,
+      blurFocusIntensity: parseFloat(element.dataset.blurFocusIntensity) || 0,
     };
 
     this.init();
@@ -82,6 +85,21 @@ class HeroCarouselLayer extends Component {
     // Setup parallax effects
     if (this.settings.parallaxVIntensity > 0 || this.settings.parallaxHIntensity > 0) {
       this.setupParallaxEffect();
+    }
+
+    // Setup Ken Burns effect
+    if (this.settings.kenBurnsIntensity > 0) {
+      this.setupKenBurnsEffect();
+    }
+
+    // Setup tilt effect
+    if (this.settings.tiltIntensity > 0) {
+      this.setupTiltEffect();
+    }
+
+    // Setup blur focus effect
+    if (this.settings.blurFocusIntensity > 0) {
+      this.setupBlurFocusEffect();
     }
   }
 
@@ -140,6 +158,102 @@ class HeroCarouselLayer extends Component {
     
     // Store reference for cleanup
     this.scrollHandler = handleScroll;
+  }
+
+  setupKenBurnsEffect() {
+    // Ken Burns effect applies slow zoom and pan during transitions
+    const kenBurnsScale = 1 + (this.settings.kenBurnsIntensity * 0.02);
+    
+    this.frames.forEach(frame => {
+      const img = frame.querySelector('.hero-carousel-image');
+      if (img) {
+        // Apply random pan direction
+        const panX = (Math.random() - 0.5) * this.settings.kenBurnsIntensity * 10;
+        const panY = (Math.random() - 0.5) * this.settings.kenBurnsIntensity * 10;
+        
+        img.style.transformOrigin = 'center center';
+        img.style.animation = `kenBurns-${frame.dataset.frameIndex} ${this.settings.frameDuration}ms linear infinite`;
+        
+        // Create unique keyframes for each frame
+        const styleId = `ken-burns-${this.element.dataset.carouselId}-${frame.dataset.frameIndex}`;
+        if (!document.getElementById(styleId)) {
+          const style = document.createElement('style');
+          style.id = styleId;
+          style.textContent = `
+            @keyframes kenBurns-${frame.dataset.frameIndex} {
+              0% { transform: scale(1) translate(0, 0); }
+              100% { transform: scale(${kenBurnsScale}) translate(${panX}px, ${panY}px); }
+            }
+          `;
+          document.head.appendChild(style);
+        }
+      }
+    });
+  }
+
+  setupTiltEffect() {
+    const maxTilt = this.settings.tiltIntensity * 2; // Max 20 degrees
+    
+    this.element.addEventListener('mousemove', (e) => {
+      const rect = this.element.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
+      const deltaX = (e.clientX - centerX) / rect.width;
+      const deltaY = (e.clientY - centerY) / rect.height;
+      
+      const rotateX = deltaY * maxTilt;
+      const rotateY = -deltaX * maxTilt;
+      
+      this.frames.forEach(frame => {
+        const img = frame.querySelector('.hero-carousel-image');
+        if (img) {
+          img.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+          img.style.transition = 'transform 0.1s ease-out';
+        }
+      });
+    });
+
+    this.element.addEventListener('mouseleave', () => {
+      this.frames.forEach(frame => {
+        const img = frame.querySelector('.hero-carousel-image');
+        if (img) {
+          img.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+          img.style.transition = 'transform 0.3s ease-out';
+        }
+      });
+    });
+  }
+
+  setupBlurFocusEffect() {
+    const maxBlur = this.settings.blurFocusIntensity * 2; // Max 20px blur
+    
+    // Initial blur state
+    this.frames.forEach(frame => {
+      const img = frame.querySelector('.hero-carousel-image');
+      if (img) {
+        img.style.filter = `blur(${maxBlur}px)`;
+        img.style.transition = 'filter 0.6s ease';
+      }
+    });
+
+    this.element.addEventListener('mouseenter', () => {
+      this.frames.forEach(frame => {
+        const img = frame.querySelector('.hero-carousel-image');
+        if (img) {
+          img.style.filter = 'blur(0px)';
+        }
+      });
+    });
+
+    this.element.addEventListener('mouseleave', () => {
+      this.frames.forEach(frame => {
+        const img = frame.querySelector('.hero-carousel-image');
+        if (img) {
+          img.style.filter = `blur(${maxBlur}px)`;
+        }
+      });
+    });
   }
 
   startCarousel() {
@@ -260,6 +374,16 @@ class HeroCarouselLayer extends Component {
     if (this.scrollHandler) {
       window.removeEventListener('scroll', this.scrollHandler);
     }
+    
+    // Clean up Ken Burns keyframes
+    const carouselId = this.element.dataset.carouselId;
+    this.frames.forEach(frame => {
+      const styleId = `ken-burns-${carouselId}-${frame.dataset.frameIndex}`;
+      const style = document.getElementById(styleId);
+      if (style) {
+        style.remove();
+      }
+    });
   }
 }
 

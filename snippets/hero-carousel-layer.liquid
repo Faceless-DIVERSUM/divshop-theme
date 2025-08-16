@@ -12,11 +12,17 @@
   assign zoom_intensity = block.settings.effect_zoom_intensity | default: 0
   assign parallax_v_intensity = block.settings.effect_parallax_vertical_intensity | default: 0
   assign parallax_h_intensity = block.settings.effect_parallax_horizontal_intensity | default: 0
+  assign ken_burns_intensity = block.settings.effect_ken_burns_intensity | default: 0
+  assign tilt_intensity = block.settings.effect_tilt_intensity | default: 0
+  assign blur_focus_intensity = block.settings.effect_blur_focus_intensity | default: 0
   
   # Calculate effect values based on intensity
   assign zoom_scale = zoom_intensity | times: 0.01 | plus: 1.0
   assign parallax_v_strength = parallax_v_intensity | times: 5
   assign parallax_h_strength = parallax_h_intensity | times: 5
+  assign ken_burns_scale = ken_burns_intensity | times: 0.02 | plus: 1.0
+  assign tilt_angle = tilt_intensity | times: 2
+  assign blur_amount = blur_focus_intensity | times: 2
 %}
 
 <div 
@@ -27,11 +33,17 @@
   data-zoom-intensity="{{ zoom_intensity }}"
   data-parallax-v-intensity="{{ parallax_v_intensity }}"
   data-parallax-h-intensity="{{ parallax_h_intensity }}"
+  data-ken-burns-intensity="{{ ken_burns_intensity }}"
+  data-tilt-intensity="{{ tilt_intensity }}"
+  data-blur-focus-intensity="{{ blur_focus_intensity }}"
   style="
     --carousel-zoom-scale: {{ zoom_scale }};
     --carousel-parallax-v: {{ parallax_v_strength }}px;
     --carousel-parallax-h: {{ parallax_h_strength }}px;
     --carousel-frame-duration: {{ frame_duration }}s;
+    --carousel-ken-burns-scale: {{ ken_burns_scale }};
+    --carousel-tilt-angle: {{ tilt_angle }}deg;
+    --carousel-blur-amount: {{ blur_amount }}px;
     position: absolute;
     top: 0;
     left: 0;
@@ -41,29 +53,35 @@
     overflow: hidden;
   "
 >
-  {% if block.settings.images != blank and block.settings.images.size > 0 %}
+  {% if block.settings.image_1 != blank or block.settings.image_2 != blank or block.settings.image_3 != blank or block.settings.image_4 != blank or block.settings.image_5 != blank %}
     <div class="hero-carousel-frames" style="position: relative; width: 100%; height: 100%;">
-      {% for image in block.settings.images %}
-        <div 
-          class="hero-carousel-frame {% if forloop.first %}active{% endif %}"
-          data-frame-index="{{ forloop.index0 }}"
-          style="
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: {% if forloop.first %}1{% else %}0{% endif %};
-          "
-        >
-          {{ image | image_url: width: 3840 | image_tag: 
-            class: 'hero-carousel-image',
-            loading: 'lazy',
-            sizes: '100vw',
-            widths: '832, 1200, 1600, 1920, 2560, 3840',
-            style: 'width: 100%; height: 100%; object-fit: cover; object-position: center;'
-          }}
-        </div>
+      {% assign frame_count = 0 %}
+      {% for i in (1..5) %}
+        {% assign image_key = 'image_' | append: i %}
+        {% assign image = block.settings[image_key] %}
+        {% if image != blank %}
+          {% assign frame_count = frame_count | plus: 1 %}
+          <div 
+            class="hero-carousel-frame {% if frame_count == 1 %}active{% endif %}"
+            data-frame-index="{{ frame_count | minus: 1 }}"
+            style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              opacity: {% if frame_count == 1 %}1{% else %}0{% endif %};
+            "
+          >
+            {{ image | image_url: width: 3840 | image_tag: 
+              class: 'hero-carousel-image',
+              loading: 'lazy',
+              sizes: '100vw',
+              widths: '832, 1200, 1600, 1920, 2560, 3840',
+              style: 'width: 100%; height: 100%; object-fit: cover; object-position: center;'
+            }}
+          </div>
+        {% endif %}
       {% endfor %}
     </div>
   {% endif %}

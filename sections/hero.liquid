@@ -526,6 +526,20 @@
     transform: scale(var(--carousel-zoom-scale));
   }
 
+  /* Tilt effect container */
+  .hero-carousel-layer[data-tilt-intensity]:not([data-tilt-intensity="0"]) {
+    transform-style: preserve-3d;
+  }
+
+  /* Blur focus effect */
+  .hero-carousel-layer[data-blur-focus-intensity]:not([data-blur-focus-intensity="0"]) .hero-carousel-image {
+    filter: blur(var(--carousel-blur-amount));
+  }
+
+  .hero-carousel-layer[data-blur-focus-intensity]:not([data-blur-focus-intensity="0"]):hover .hero-carousel-image {
+    filter: blur(0px);
+  }
+
   /* Background layer styles */
   .hero__background-layer {
     position: absolute;
