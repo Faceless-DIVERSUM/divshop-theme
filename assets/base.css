@@ -4544,3 +4544,205 @@ text-component {
     --view-transition-new-main-content: slideInRight 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 }
+
+/* Advanced hover effects for images */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__image,
+  .product-card__media img,
+  .collection-card__media img {
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                filter 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .hero:hover .hero__image {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+  }
+}
+
+/* Modern loading skeleton animations */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 25%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeletonLoading 2s ease-in-out infinite;
+}
+
+@keyframes skeletonLoading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Enhanced floating animations */
+@media (prefers-reduced-motion: no-preference) {
+  .float-animation {
+    animation: floatSoft 6s ease-in-out infinite;
+  }
+  
+  .float-animation-delayed {
+    animation: floatSoft 6s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+}
+
+@keyframes floatSoft {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Modern glassmorphism effects */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced text gradient effects */
+.text-gradient {
+  background: linear-gradient(
+    45deg,
+    var(--color-primary) 0%,
+    var(--color-secondary) 50%,
+    var(--color-primary) 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Modern card hover with depth */
+@media (prefers-reduced-motion: no-preference) {
+  .modern-card {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .modern-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transition: left 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 1;
+    pointer-events: none;
+  }
+  
+  .modern-card:hover::before {
+    left: 100%;
+  }
+  
+  .modern-card:hover {
+    transform: translateY(-8px) rotateX(5deg);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Smooth accordion animations */
+.modern-accordion {
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Advanced button states */
+@media (prefers-reduced-motion: no-preference) {
+  .button-modern {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+    background-size: 200% 200%;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .button-modern:hover {
+    background-position: 100% 100%;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .button-modern:active {
+    transform: translateY(0) scale(0.98);
+    transition-duration: 0.1s;
+  }
+}
+
+/* Smooth cursor follower effect */
+.cursor-follower {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  pointer-events: none;
+  mix-blend-mode: difference;
+  z-index: 9999;
+  transition: transform 0.1s ease-out,
+              scale 0.2s ease-out;
+}
+
+.cursor-follower.active {
+  transform: scale(1.5);
+}
+
+/* Enhanced section dividers */
+.section-divider {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-primary) 50%,
+    transparent 100%
+  );
+  margin: 40px 0;
+  position: relative;
+}
+
+.section-divider::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  width: 0;
+  height: 4px;
+  background: var(--color-primary);
+  transform: translateX(-50%);
+  transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.section-divider.in-view::before {
+  width: 100px;
+}

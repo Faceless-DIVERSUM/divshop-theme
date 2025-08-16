@@ -23,6 +23,9 @@ class ModernAnimations {
     this.setupSectionAnimations();
     this.setupTextAnimations();
     this.setupInteractiveElements();
+    this.setupCursorFollower();
+    this.setupAdvancedHovers();
+    this.setupModernCards();
   }
 
   /**
@@ -212,6 +215,111 @@ class ModernAnimations {
       `;
       document.head.appendChild(style);
     }
+  }
+
+  /**
+   * Setup modern cursor follower effect
+   */
+  setupCursorFollower() {
+    if (window.matchMedia('(hover: hover)').matches && !window.matchMedia('(pointer: coarse)').matches) {
+      const follower = document.createElement('div');
+      follower.className = 'cursor-follower';
+      document.body.appendChild(follower);
+
+      let mouseX = 0;
+      let mouseY = 0;
+      let followerX = 0;
+      let followerY = 0;
+
+      const updateFollower = () => {
+        followerX += (mouseX - followerX) * 0.1;
+        followerY += (mouseY - followerY) * 0.1;
+        
+        follower.style.left = followerX + 'px';
+        follower.style.top = followerY + 'px';
+        
+        requestAnimationFrame(updateFollower);
+      };
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      // Activate cursor on interactive elements
+      document.addEventListener('mouseenter', (e) => {
+        if (e.target.matches('a, button, .interactive-element')) {
+          follower.classList.add('active');
+        }
+      }, true);
+
+      document.addEventListener('mouseleave', (e) => {
+        if (e.target.matches('a, button, .interactive-element')) {
+          follower.classList.remove('active');
+        }
+      }, true);
+
+      updateFollower();
+    }
+  }
+
+  /**
+   * Setup advanced hover effects
+   */
+  setupAdvancedHovers() {
+    // Enhanced image hover effects
+    document.querySelectorAll('.hero__image, .product-card__media img').forEach(image => {
+      const container = image.closest('.hero, .product-card');
+      if (container) {
+        container.addEventListener('mouseenter', () => {
+          if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+            image.style.transform = 'scale(1.1)';
+            image.style.filter = 'brightness(1.1)';
+          }
+        });
+
+        container.addEventListener('mouseleave', () => {
+          image.style.transform = '';
+          image.style.filter = '';
+        });
+      }
+    });
+
+    // Text gradient effects for headings
+    document.querySelectorAll('h1, h2, .hero__title').forEach(heading => {
+      heading.classList.add('text-gradient');
+    });
+  }
+
+  /**
+   * Setup modern card effects
+   */
+  setupModernCards() {
+    document.querySelectorAll('.product-card, .collection-card').forEach(card => {
+      card.classList.add('modern-card');
+      
+      // Add floating animation to alternating cards
+      const index = Array.from(card.parentNode.children).indexOf(card);
+      if (index % 2 === 0) {
+        card.classList.add('float-animation');
+      } else {
+        card.classList.add('float-animation-delayed');
+      }
+    });
+
+    // Setup section dividers
+    document.querySelectorAll('.section').forEach((section, index) => {
+      if (index > 0) {
+        const divider = document.createElement('div');
+        divider.className = 'section-divider scroll-reveal';
+        section.parentNode.insertBefore(divider, section);
+      }
+    });
+
+    // Glass effect for certain elements
+    document.querySelectorAll('.button-secondary, .cart-drawer').forEach(element => {
+      element.classList.add('glass-effect');
+    });
   }
 }
 
