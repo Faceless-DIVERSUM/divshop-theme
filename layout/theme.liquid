@@ -66,5 +66,11 @@
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
     {% endif %}
+
+    <script
+      src="{{ 'modern-animations.js' | asset_url }}"
+      type="module"
+      defer
+    ></script>
   </body>
 </html>
