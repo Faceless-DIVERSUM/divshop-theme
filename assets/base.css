@@ -4278,3 +4278,269 @@ text-component {
     font-size: max(1rem, 100%);
   }
 }
+
+/* ==========================================
+   MODERN ENHANCEMENTS FOR PREMIUM EXPERIENCE
+   ========================================== */
+
+/* Enhanced scroll-triggered animations */
+@media (prefers-reduced-motion: no-preference) {
+  /* Scroll reveal animation system */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .scroll-reveal-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .scroll-reveal-left.revealed {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  .scroll-reveal-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .scroll-reveal-right.revealed {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  /* Staggered animation delays for multiple elements */
+  .scroll-reveal:nth-child(1) { transition-delay: 0ms; }
+  .scroll-reveal:nth-child(2) { transition-delay: 100ms; }
+  .scroll-reveal:nth-child(3) { transition-delay: 200ms; }
+  .scroll-reveal:nth-child(4) { transition-delay: 300ms; }
+  .scroll-reveal:nth-child(5) { transition-delay: 400ms; }
+  .scroll-reveal:nth-child(6) { transition-delay: 500ms; }
+}
+
+/* Enhanced hero section with modern effects */
+.hero__content-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__title,
+  .hero__subtitle,
+  .hero__text,
+  .hero__buttons {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: heroContentReveal 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+  
+  .hero__title {
+    animation-delay: 0.2s;
+  }
+  
+  .hero__subtitle {
+    animation-delay: 0.4s;
+  }
+  
+  .hero__text {
+    animation-delay: 0.6s;
+  }
+  
+  .hero__buttons {
+    animation-delay: 0.8s;
+  }
+}
+
+@keyframes heroContentReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modern button enhancements */
+.button:not(.button-unstyled) {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.button:not(.button-unstyled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.button:not(.button-unstyled)::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+  z-index: 0;
+}
+
+.button:not(.button-unstyled):hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.button:not(.button-unstyled) > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Enhanced product cards with sophisticated hover */
+@media (prefers-reduced-motion: no-preference) {
+  .product-card,
+  .collection-card {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .product-card:hover,
+  .collection-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product-card__media,
+  .collection-card__media {
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow: hidden;
+  }
+  
+  .product-card:hover .product-card__media img,
+  .collection-card:hover .collection-card__media img {
+    transform: scale(1.1);
+  }
+  
+  .product-card__content,
+  .collection-card__content {
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .product-card:hover .product-card__content,
+  .collection-card:hover .collection-card__content {
+    transform: translateY(-5px);
+  }
+}
+
+/* Modern text reveal animations */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-text {
+    background: linear-gradient(90deg, transparent 0%, currentColor 50%, transparent 100%);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: textReveal 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+  
+  @keyframes textReveal {
+    to {
+      background-position: -100% 0;
+    }
+  }
+}
+
+/* Enhanced loading states */
+.modern-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: modernShimmer 2s ease-in-out infinite;
+}
+
+@keyframes modernShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Smooth parallax effect for backgrounds */
+@media (prefers-reduced-motion: no-preference) {
+  .parallax-bg {
+    transition: transform 0.1s ease-out;
+  }
+}
+
+/* Enhanced section spacing with smooth reveals */
+@media (prefers-reduced-motion: no-preference) {
+  .section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .section.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modern micro-interactions */
+.interactive-element {
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.interactive-element:hover {
+  transform: scale(1.05);
+}
+
+.interactive-element:active {
+  transform: scale(0.98);
+}
+
+/* Enhanced focus states */
+*:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+  border-radius: 4px;
+  transition: outline-offset 0.2s ease;
+}
+
+/* Modern gradient overlays */
+.modern-gradient-overlay {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Smooth page transitions enhancement */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    --view-transition-old-main-content: slideOutLeft 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --view-transition-new-main-content: slideInRight 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+}

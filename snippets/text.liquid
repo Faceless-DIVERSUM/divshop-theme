@@ -51,6 +51,9 @@
 {% capture attributes %}
   class="{{ class }} spacing-style text-block text-block--{{ block.id }} {{ block_settings.type_preset }}
     {{ text_block_classes }}
+    {% if template contains 'index' and type == 'heading' %}hero__title{% endif %}
+    {% if template contains 'index' and type == 'body' %}hero__text{% endif %}
+    {% unless template contains 'index' %}scroll-reveal{% endunless %}
   "
 
   style="
