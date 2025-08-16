@@ -1,0 +1,1 @@
+# divshop-theme
