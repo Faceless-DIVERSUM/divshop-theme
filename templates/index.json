@@ -322,10 +322,81 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "features_AXM1": {
+      "type": "media-with-content",
+      "blocks": {
+        "heading_features": {
+          "type": "text",
+          "settings": {
+            "text": "<h2 class=\"axm-heading-lg\">Why Choose Our Collection</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-heading--family)",
+            "font_size": "3rem",
+            "line_height": "tight",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "padding-block-end": 24
+          }
+        },
+        "text_features": {
+          "type": "text",
+          "settings": {
+            "text": "<p class=\"axm-text-lg\">Experience unparalleled quality with our carefully curated selection. Each piece is chosen for its exceptional craftsmanship, modern design, and timeless appeal.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "body",
+            "font": "var(--font-body--family)",
+            "font_size": "1.125rem",
+            "line_height": "relaxed",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "padding-block-end": 32
+          }
+        },
+        "button_features": {
+          "type": "button",
+          "settings": {
+            "label": "Discover More",
+            "link": "/collections/all",
+            "open_in_new_tab": false,
+            "style_class": "axm-button axm-button-primary",
+            "width": "fit-content"
+          }
+        }
+      },
+      "block_order": [
+        "heading_features",
+        "text_features", 
+        "button_features"
+      ],
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "gap": 48,
+        "section_width": "page-width",
+        "section_height": "auto",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
     }
   },
   "order": [
     "hero_jVaWmY",
-    "product_list_fa6P9H"
+    "product_list_fa6P9H",
+    "features_AXM1"
   ]
 }

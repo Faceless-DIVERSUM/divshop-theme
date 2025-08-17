@@ -14,7 +14,7 @@
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
-  class="section section--{{ section.settings.section_width }} disable-section-top-offset media-with-content color-{{ section.settings.color_scheme }} spacing-style {{ media_class_modifier }}"
+  class="section section--{{ section.settings.section_width }} disable-section-top-offset media-with-content color-{{ section.settings.color_scheme }} spacing-style axm-section {{ media_class_modifier }}"
   data-testid="media-with-content"
   style="
     {%- render 'spacing-style', settings: section.settings %}
@@ -41,9 +41,11 @@
     data-shopify-visual-preview
   {% endif %}
 >
+  <div class="axm-container">
   {% content_for 'block', type: '_media-without-appearance', id: 'media' %}
 
   {% content_for 'block', type: '_content-without-appearance', id: 'content' %}
+  </div>
 </div>
 
 {% stylesheet %}

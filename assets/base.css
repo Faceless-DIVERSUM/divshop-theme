@@ -5381,3 +5381,38 @@ header-component[transparent="always"].scrolled .header__row {
     transform: translateY(0);
   }
 }
+
+/* Modern media-with-content section styling */
+.media-with-content.axm-section {
+  padding: var(--space-5xl) 0;
+}
+
+.media-with-content .axm-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4xl);
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .media-with-content .axm-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+    text-align: center;
+  }
+}
+
+.media-with-content img,
+.media-with-content video {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  height: auto;
+}
+
+/* Enhanced section spacing */
+.axm-section + .axm-section {
+  margin-top: var(--space-2xl);
+}
