@@ -16,23 +16,49 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<p>Browse our latest products</p>",
+            "text": "<h1 class=\"axm-heading-xl\">Discover Modern Excellence</h1>",
             "width": "fit-content",
             "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
+            "alignment": "center",
+            "type_preset": "h1",
+            "font": "var(--font-heading--family)",
+            "font_size": "4rem",
+            "line_height": "tight",
+            "letter_spacing": "tight",
             "case": "none",
             "wrap": "pretty",
-            "color": "var(--color-foreground-heading)",
+            "color": "white",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
             "padding-block-start": 0,
-            "padding-block-end": 0,
+            "padding-block-end": 24,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_subtitle": {
+          "type": "text",
+          "name": "Subtitle",
+          "settings": {
+            "text": "<p class=\"axm-text-lg axm-text-muted\">Experience the future of shopping with our carefully curated collection</p>",
+            "width": "fit-content",
+            "max_width": "600px",
+            "alignment": "center",
+            "type_preset": "body",
+            "font": "var(--font-body--family)",
+            "font_size": "1.25rem",
+            "line_height": "relaxed",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "rgba(255, 255, 255, 0.9)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 32,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
@@ -42,10 +68,25 @@
           "type": "button",
           "name": "t:names.button",
           "settings": {
-            "label": "Shop all",
+            "label": "Explore Collection",
             "link": "shopify://collections/all",
             "open_in_new_tab": false,
-            "style_class": "button-secondary",
+            "style_class": "axm-button axm-button-primary",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          },
+          "blocks": {}
+        },
+        "button_secondary": {
+          "type": "button",
+          "name": "Secondary Button",
+          "settings": {
+            "label": "Learn More",
+            "link": "/pages/about",
+            "open_in_new_tab": false,
+            "style_class": "axm-button axm-button-secondary",
             "width": "fit-content",
             "custom_width": 100,
             "width_mobile": "fit-content",
@@ -56,35 +97,36 @@
       },
       "block_order": [
         "text_YLPk4p",
-        "button_H9gpTf"
+        "text_subtitle",
+        "button_H9gpTf",
+        "button_secondary"
       ],
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
-        "media_type_2": "image",
-        "image_2": "shopify://shop_images/New_logo_-_Color_copie_11.svg",
+        "media_type_2": "none",
         "link": "",
         "open_in_new_tab": false,
         "content_direction": "column",
         "vertical_on_mobile": true,
-        "horizontal_alignment": "space-between",
-        "vertical_alignment": "flex-end",
-        "align_baseline": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "flex-end",
-        "gap": 24,
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 32,
         "section_width": "full-width",
         "section_height": "full-screen",
         "section_height_custom": 50,
         "color_scheme": "scheme-6",
         "toggle_overlay": true,
-        "overlay_color": "#12121266",
-        "overlay_style": "solid",
+        "overlay_color": "#00000040",
+        "overlay_style": "gradient",
         "gradient_direction": "to bottom",
         "blurred_reflection": false,
         "reflection_opacity": 75,
-        "padding-block-start": 100,
-        "padding-block-end": 72
+        "padding-block-start": 80,
+        "padding-block-end": 80
       }
     },
     "product_list_fa6P9H": {
@@ -280,10 +322,81 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "features_AXM1": {
+      "type": "media-with-content",
+      "blocks": {
+        "heading_features": {
+          "type": "text",
+          "settings": {
+            "text": "<h2 class=\"axm-heading-lg\">Why Choose Our Collection</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-heading--family)",
+            "font_size": "3rem",
+            "line_height": "tight",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "padding-block-end": 24
+          }
+        },
+        "text_features": {
+          "type": "text",
+          "settings": {
+            "text": "<p class=\"axm-text-lg\">Experience unparalleled quality with our carefully curated selection. Each piece is chosen for its exceptional craftsmanship, modern design, and timeless appeal.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "body",
+            "font": "var(--font-body--family)",
+            "font_size": "1.125rem",
+            "line_height": "relaxed",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "padding-block-end": 32
+          }
+        },
+        "button_features": {
+          "type": "button",
+          "settings": {
+            "label": "Discover More",
+            "link": "/collections/all",
+            "open_in_new_tab": false,
+            "style_class": "axm-button axm-button-primary",
+            "width": "fit-content"
+          }
+        }
+      },
+      "block_order": [
+        "heading_features",
+        "text_features", 
+        "button_features"
+      ],
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "gap": 48,
+        "section_width": "page-width",
+        "section_height": "auto",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
     }
   },
   "order": [
     "hero_jVaWmY",
-    "product_list_fa6P9H"
+    "product_list_fa6P9H",
+    "features_AXM1"
   ]
 }
