@@ -37,6 +37,7 @@
     section-resource-list
     spacing-style
     gap-style
+    axm-section
   "
   style="
     --column-count-mobile: {{ section.settings.mobile_columns }};
@@ -45,9 +46,10 @@
     {{ styles }}
   "
 >
-  <div class="section-resource-list__header">
-    {%- content_for 'block', type: '_product-list-content', id: 'static-header' -%}
-  </div>
+  <div class="axm-container">
+    <div class="section-resource-list__header">
+      {%- content_for 'block', type: '_product-list-content', id: 'static-header' -%}
+    </div>
 
   {% capture list_items %}
     {% for i in (1..max_items) %}
@@ -58,7 +60,7 @@
         {% assign product = null %}
       {% endif %}
       <div
-        class="resource-list__item"
+        class="resource-list__item axm-card"
       >
         {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: product %}
       </div>
@@ -78,6 +80,8 @@
   <div
     class="
       resource-list
+      axm-grid
+      axm-grid-3
       {% if section.settings.layout_type == 'carousel' %}
         force-full-width
       {% endif %}
@@ -136,6 +140,7 @@
     style="--horizontal-alignment: {{ section.settings.horizontal_alignment }};"
   >
     {%- content_for 'blocks' -%}
+  </div>
   </div>
 </div>
 

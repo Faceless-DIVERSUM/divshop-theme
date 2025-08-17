@@ -26,6 +26,9 @@ class ModernAnimations {
     this.setupCursorFollower();
     this.setupAdvancedHovers();
     this.setupModernCards();
+    this.setupHeaderScrollEffects();
+    this.setupHeroScrollIndicator();
+    this.setupAXMAnimations();
   }
 
   /**
@@ -319,6 +322,171 @@ class ModernAnimations {
     // Glass effect for certain elements
     document.querySelectorAll('.button-secondary, .cart-drawer').forEach(element => {
       element.classList.add('glass-effect');
+    });
+  }
+
+  /**
+   * Setup header scroll effects for modern sticky behavior
+   */
+  setupHeaderScrollEffects() {
+    const header = document.querySelector('header-component');
+    if (!header) return;
+
+    let lastScrollY = window.scrollY;
+    let isScrollingUp = false;
+
+    const throttle = (func, limit) => {
+      let inThrottle;
+      return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+          func.apply(context, args);
+          inThrottle = true;
+          setTimeout(() => inThrottle = false, limit);
+        }
+      }
+    }
+
+    const handleScroll = throttle(() => {
+      const currentScrollY = window.scrollY;
+      
+      // Add scrolled class when scrolled past 50px
+      if (currentScrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+
+      // Determine scroll direction
+      if (currentScrollY > lastScrollY && currentScrollY > 200) {
+        // Scrolling down
+        if (isScrollingUp) {
+          header.setAttribute('data-scroll-direction', 'down');
+          isScrollingUp = false;
+        }
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up
+        if (!isScrollingUp) {
+          header.setAttribute('data-scroll-direction', 'up');
+          isScrollingUp = true;
+        }
+      }
+
+      lastScrollY = currentScrollY;
+    }, 16);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+  }
+
+  /**
+   * Setup hero scroll indicator
+   */
+  setupHeroScrollIndicator() {
+    const hero = document.querySelector('.hero-wrapper');
+    if (!hero) return;
+
+    // Create scroll indicator
+    const scrollIndicator = document.createElement('div');
+    scrollIndicator.className = 'hero__scroll-indicator';
+    scrollIndicator.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    `;
+    
+    hero.appendChild(scrollIndicator);
+
+    // Hide indicator when scrolled past hero
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        scrollIndicator.style.opacity = entry.isIntersecting ? '0.7' : '0';
+      },
+      { threshold: 0.1 }
+    );
+    
+    observer.observe(hero);
+
+    // Smooth scroll on click
+    scrollIndicator.addEventListener('click', () => {
+      const nextSection = hero.nextElementSibling;
+      if (nextSection) {
+        nextSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+
+  /**
+   * Setup AXM-style animations and interactions
+   */
+  setupAXMAnimations() {
+    // Add reveal animations to AXM utility elements
+    document.querySelectorAll('.axm-card, .axm-heading-xl, .axm-heading-lg').forEach(element => {
+      element.classList.add('scroll-reveal');
+    });
+
+    // Stagger animations for grid items
+    document.querySelectorAll('.axm-grid').forEach(grid => {
+      const items = grid.children;
+      Array.from(items).forEach((item, index) => {
+        item.style.animationDelay = `${index * 0.1}s`;
+        item.classList.add('scroll-reveal');
+      });
+    });
+
+    // Enhanced button interactions
+    document.querySelectorAll('.axm-button').forEach(button => {
+      button.addEventListener('mouseenter', () => {
+        if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+          button.style.transform = 'translateY(-2px) scale(1.02)';
+        }
+      });
+
+      button.addEventListener('mouseleave', () => {
+        button.style.transform = '';
+      });
+
+      // Add ripple effect on click
+      button.addEventListener('click', (e) => {
+        const ripple = document.createElement('span');
+        const rect = button.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.cssText = `
+          position: absolute;
+          width: ${size}px;
+          height: ${size}px;
+          left: ${x}px;
+          top: ${y}px;
+          background: rgba(255, 255, 255, 0.3);
+          border-radius: 50%;
+          transform: scale(0);
+          animation: ripple 0.6s linear;
+          pointer-events: none;
+        `;
+        
+        button.style.position = 'relative';
+        button.style.overflow = 'hidden';
+        button.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
     });
   }
 }
